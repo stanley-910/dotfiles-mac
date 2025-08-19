@@ -1,2 +1,2 @@
 
-# MacOS Dotfiles
+# macOS dotfiles
