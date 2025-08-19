@@ -1,0 +1,47 @@
+#!/usr/bin/env bash
+
+cat <<'EOF'
+Git Menu        
+
+h  :  Open Remote Repository (current branch)
+H  :  Open Remote Repository (main branch)
+p  :  Open Pull Requests By Current User 
+P  :  Search Pull Requests By Current Ticket
+j  :  Open Jira Ticket URL
+J  :  Open Jira Board URL
+b  :  Open Pipeline Build
+
+Press key to execute
+EOF
+
+# Keep the popup open until a key is pressed
+read -n 1 -s key
+
+# Execute the corresponding action based on key pressed
+case "$key" in
+h)
+  ~/.config/scripts/open_remote.sh h
+  ;;
+H)
+  ~/.config/scripts/open_remote.sh H
+  ;;
+p)
+  ~/.config/scripts/open_remote.sh p
+  ;;
+P)
+  ~/.config/scripts/open_remote.sh P
+  ;;
+j)
+  ~/.config/scripts/open_ticket.sh j
+  ;;
+J)
+  ~/.config/scripts/open_ticket.sh J
+  ;;
+b)
+  ~/.config/scripts/open_remote.sh b
+  ;;
+
+*)
+  echo "Invalid option: $key"
+  ;;
+esac

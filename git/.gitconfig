@@ -1,0 +1,26 @@
+[user]
+	name = Stanley Wang
+	email = stanley.wang@autodesk.com
+
+[filter "lfs"]
+	required = true
+	clean = git-lfs clean -- %f
+	smudge = git-lfs smudge -- %f
+	process = git-lfs filter-process
+[color]
+	ui = true
+  status = auto
+  branch = auto
+  diff = auto
+[rerere]
+	enabled = true
+[column]
+	ui = auto
+[branch]
+	sort = -committerdate
+[core]
+	excludesfile = /Users/wangs3/.gitignore_global
+[push]
+	autoSetupRemote = true
+[pull]
+	rebase = false
