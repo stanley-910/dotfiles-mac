@@ -7,6 +7,7 @@ Steps to setup:
 
 ```sh
 
+brew install stow 
 git clone git@github.com:stanley-910/dotfiles-mac.git ~/dotfiles-mac
 cd dotfiles-mac
 stow .
