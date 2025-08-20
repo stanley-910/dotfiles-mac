@@ -19,7 +19,7 @@
 # Modern CLI Tools
 # brew install eza    # 0.21.4
 # brew install bat    # 0.25.0_1
-# brew install lsd    # 1.1.5
+
 
 # Classics 
 # brew install tree
@@ -64,8 +64,6 @@ zmodload zsh/zprof # run with zprof
 # Initialize Homebrew environment (macOS package manager)
 eval "$(/opt/homebrew/bin/brew shellenv)"
 
-# Enable autojump plugin for directory navigation
-[ -f /opt/homebrew/etc/profile.d/autojump.sh ] && . /opt/homebrew/etc/profile.d/autojump.sh
 
 # Show hidden files in glob patterns (files starting with .)
 setopt globdots
@@ -316,9 +314,9 @@ export PATH="$PATH:/Users/stanley/.local/bin"
 # ==============================================================================
 
 # File and directory operations
-alias ls='lsd -la'        # List with icons and details
-alias la='lsd -a'         # List all files with icons  
-alias ll='lsd -al'        # List all with details and icons
+alias ls='eza -a --icons --git'                    # List with icons, details and git status (including hidden files)
+alias la='eza -la --icons --git --total-size'                     # List with icons and details (no hidden files)
+alias ll='eza -la --icons --git --total-size'       # List all with details, icons, git status and directory sizes
 alias v="nvim"            # Quick nvim access
 alias vim="nvim"          # Use neovim instead of vim
 alias t="tmux"            # Quick tmux access
