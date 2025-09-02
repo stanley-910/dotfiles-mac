@@ -10,7 +10,13 @@ Steps to setup:
 brew install stow 
 git clone git@github.com:stanley-910/dotfiles-mac.git ~/dotfiles-mac
 cd dotfiles-mac
-stow .
+
+# existing .config, updating
+stow --adopt * 
+git restore . 
+
+# fresh start
+stow *
 ```
 
 Sets up symlinks into `.config/` and will automatically ignore READMEs.
