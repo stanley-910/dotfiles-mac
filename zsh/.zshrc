@@ -316,7 +316,7 @@ export PATH="$PATH:/Users/stanley/.local/bin"
 # File and directory operations
 alias ls='eza -a --icons --git'                    # List with icons, details and git status (including hidden files)
 alias la='eza -la --icons --git --total-size'                     # List with icons and details (no hidden files)
-alias ll='eza -la --icons --git --total-size'       # List all with details, icons, git status and directory sizes
+alias ll='eza -la --icons --git'       # List all with details, icons, git status and directory sizes
 alias v="nvim"            # Quick nvim access
 alias vim="nvim"          # Use neovim instead of vim
 alias t="tmux"            # Quick tmux access
@@ -499,6 +499,7 @@ function is_integrated_terminal() {
   # Check for common IDE terminal processes
   [[ "$parent_process" =~ "Cursor" ]] || \
   [[ "$parent_process" =~ "webstorm" ]]
+  [[ "$parent_process" =~ "clion" ]]
 }
 
 if [[ -z $TMUX ]] && ! is_integrated_terminal; then
