@@ -492,6 +492,11 @@ alias sysinfo='fastfetch'
 
 # Function to detect if we're running in an integrated terminal
 function is_integrated_terminal() {
+  # use env var I inject into osX cursor term process
+  if [[ -n "$CURSOR_TERM" ]]; then
+    return 0
+  fi
+
   local parent_process
   # Get the parent process name
   parent_process=$(ps -o comm= -p $PPID)

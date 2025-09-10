@@ -21,7 +21,8 @@
                                             "^com.apple.Maps",
                                             "^com.tinyspeck.slackmacgap",
                                             "^app.zen-browser.zen",
-                                            "^com.todoist.mac.Todoist"
+                                            "^com.todoist.mac.Todoist",
+                                            "^com.apple.iCal"
                                         ],
                                         "type": "frontmost_application_if"
                                     }
@@ -52,7 +53,8 @@
                                             "^com.apple.Maps",
                                             "^com.tinyspeck.slackmacgap",
                                             "^app.zen-browser.zen",
-                                            "^com.todoist.mac.Todoist"
+                                            "^com.todoist.mac.Todoist",
+                                            "^com.apple.iCal"
                                         ],
                                         "type": "frontmost_application_if"
                                     }
@@ -78,7 +80,8 @@
                                             "^com.apple.Maps",
                                             "^com.tinyspeck.slackmacgap",
                                             "^app.zen-browser.zen",
-                                            "^com.todoist.mac.Todoist"
+                                            "^com.todoist.mac.Todoist",
+                                            "^com.apple.iCal"
                                         ],
                                         "type": "frontmost_application_if"
                                     }
@@ -104,7 +107,8 @@
                                             "^com.apple.Maps",
                                             "^com.tinyspeck.slackmacgap",
                                             "^app.zen-browser.zen",
-                                            "^com.todoist.mac.Todoist"
+                                            "^com.todoist.mac.Todoist",
+                                            "^com.apple.iCal"
                                         ],
                                         "type": "frontmost_application_if"
                                     }
@@ -130,7 +134,8 @@
                                             "^com.apple.Maps",
                                             "^com.tinyspeck.slackmacgap",
                                             "^app.zen-browser.zen",
-                                            "^com.todoist.mac.Todoist"
+                                            "^com.todoist.mac.Todoist",
+                                            "^com.apple.iCal"
                                         ],
                                         "type": "frontmost_application_if"
                                     }
@@ -156,7 +161,8 @@
                                             "^com.apple.Maps",
                                             "^com.tinyspeck.slackmacgap",
                                             "^app.zen-browser.zen",
-                                            "^com.todoist.mac.Todoist"
+                                            "^com.todoist.mac.Todoist",
+                                            "^com.apple.iCal"
                                         ],
                                         "type": "frontmost_application_if"
                                     }
@@ -182,7 +188,8 @@
                                             "^com.apple.Maps",
                                             "^com.tinyspeck.slackmacgap",
                                             "^app.zen-browser.zen",
-                                            "^com.todoist.mac.Todoist"
+                                            "^com.todoist.mac.Todoist",
+                                            "^com.apple.iCal"
                                         ],
                                         "type": "frontmost_application_if"
                                     }
@@ -213,7 +220,8 @@
                                             "^com.apple.Maps",
                                             "^com.tinyspeck.slackmacgap",
                                             "^app.zen-browser.zen",
-                                            "^com.todoist.mac.Todoist"
+                                            "^com.todoist.mac.Todoist",
+                                            "^com.apple.iCal"
                                         ],
                                         "type": "frontmost_application_if"
                                     }
@@ -516,7 +524,8 @@
                                             "^com.apple.finder",
                                             "^com.apple.maps",
                                             "^com.tinyspeck.slackmacgap",
-                                            "^app.zen-browser.zen"
+                                            "^app.zen-browser.zen",
+                                            "^com.apple.iCal"
                                         ],
                                         "type": "frontmost_application_if"
                                     }
@@ -555,7 +564,8 @@
                                             "^com.apple.finder",
                                             "^com.apple.maps",
                                             "^com.tinyspeck.slackmacgap",
-                                            "^app.zen-browser.zen"
+                                            "^app.zen-browser.zen",
+                                            "^com.apple.iCal"
                                         ],
                                         "type": "frontmost_application_if"
                                     }
@@ -585,7 +595,8 @@
                                             "^com.apple.Maps",
                                             "^com.tinyspeck.slackmacgap",
                                             "^app.zen-browser.zen",
-                                            "^com.todoist.mac.Todoist"
+                                            "^com.todoist.mac.Todoist",
+                                            "^com.apple.iCal"
                                         ],
                                         "type": "frontmost_application_if"
                                     }
@@ -641,7 +652,8 @@
                                             "^com.apple.finder",
                                             "^com.apple.maps",
                                             "^com.tinyspeck.slackmacgap",
-                                            "^app.zen-browser.zen"
+                                            "^app.zen-browser.zen",
+                                            "^com.apple.iCal"
                                         ],
                                         "type": "frontmost_application_if"
                                     }
@@ -668,7 +680,8 @@
                                             "^com.apple.finder",
                                             "^com.apple.maps",
                                             "^com.tinyspeck.slackmacgap",
-                                            "^app.zen-browser.zen"
+                                            "^app.zen-browser.zen",
+                                            "^com.apple.iCal"
                                         ],
                                         "type": "frontmost_application_if"
                                     }
@@ -695,7 +708,8 @@
                                             "^com.apple.finder",
                                             "^com.apple.maps",
                                             "^com.tinyspeck.slackmacgap",
-                                            "^app.zen-browser.zen"
+                                            "^app.zen-browser.zen",
+                                            "^com.apple.iCal"
                                         ],
                                         "type": "frontmost_application_if"
                                     }
@@ -722,7 +736,8 @@
                                             "^com.apple.finder",
                                             "^com.apple.maps",
                                             "^com.tinyspeck.slackmacgap",
-                                            "^app.zen-browser.zen"
+                                            "^app.zen-browser.zen",
+                                            "^com.apple.iCal"
                                         ],
                                         "type": "frontmost_application_if"
                                     }
