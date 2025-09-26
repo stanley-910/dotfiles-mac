@@ -1,0 +1,315 @@
+#!/bin/sh
+
+# Course File Organizer (interactive, no external deps)
+# - Detects course codes for: MATH, COMP, PHIL, LING (case-insensitive)
+# - Offers rename suggestions + manual entry
+# - Moves files into: <COURSES_DIR>/<SUBJECT>/class-<###>/
+#
+# Usage:
+#   organize-class-files [-d DOWNLOADS_DIR] [-r COURSES_DIR] [-g REGEX] [files...]
+# Defaults:
+#   DOWNLOADS_DIR="$HOME/Downloads"
+#   COURSES_DIR="$HOME/Documents/Courses"
+#
+# Modes:
+#   1) Default/Regex mode: scans a directory (default ~/Downloads). Use -g to pre-filter filenames by regex.
+#   2) File mode: pass one or more explicit file paths as trailing args; -d is ignored in this mode.
+
+# ----------------------------- Styling -------------------------------------
+RED='\033[0;31m'
+GREEN='\033[0;32m'
+BLUE='\033[0;34m'
+YELLOW='\033[1;33m'
+NC='\033[0m'
+BOLD='\033[1m'
+
+print_box() {
+    _text="$1"
+    _len=$(printf "%s" "$_text" | wc -c | tr -d ' ')
+    _line=$(printf '%*s' $((_len + 2)) '' | tr ' ' '─')
+    printf "\n${BOLD}┌%s┐${NC}\n" "$_line"
+    printf "${BOLD}│ %s │${NC}\n" "$_text"
+    printf "${BOLD}└%s┘${NC}\n" "$_line"
+}
+
+print_info() { printf "\n${BLUE}%b${NC}\n" "$*"; }
+print_ok()   { printf "${GREEN}%b${NC}\n" "$*"; }
+print_warn() { printf "${YELLOW}%b${NC}\n" "$*"; }
+print_err()  { printf "${RED}%b${NC}\n" "$*"; }
+
+# --------------------------- Config/Args ------------------------------------
+DOWNLOADS_DIR="$HOME/Downloads"
+COURSES_DIR="$HOME/Documents/Courses"
+REGEX_FILTER=""
+# If set via -i, increment filenames on conflict; default is overwrite
+INCREMENT_ON_CONFLICT=0
+
+while getopts "d:r:g:ih" _opt; do
+    case "$_opt" in
+        d) DOWNLOADS_DIR="$OPTARG" ;;
+        r) COURSES_DIR="$OPTARG" ;;
+        g) REGEX_FILTER="$OPTARG" ;;
+        i) INCREMENT_ON_CONFLICT=1 ;;
+        h)
+            echo "Usage: $(basename "$0") [-d DOWNLOADS_DIR] [-r COURSES_DIR] [-g REGEX] [-i] [files...]"
+            echo "  -d DIR     Directory to scan (default: $HOME/Downloads)"
+            echo "  -r DIR     Destination root (default: $HOME/Documents/Courses)"
+            echo "  -g REGEX   Only include files whose basename matches REGEX (requires directory mode)"
+            echo "  -i         Increment filename on conflict (default: overwrite existing file)"
+            echo "  files...   Explicit file paths to process (bypasses -d/-g scan)"
+            exit 0
+            ;;
+    esac
+done
+
+mkdir -p "$COURSES_DIR" 2>/dev/null
+
+# ------------------------ Helpers / Detection -------------------------------
+# stdout: SUBJECT-### or empty if none
+detect_course_code() {
+    _fname="$1"
+    _code=$(printf "%s" "$_fname" | grep -Eio '(MATH|COMP|PHIL|LING)[ _-]?[0-9]{3}' | head -n 1)
+    [ -z "$_code" ] && return 1
+    _subj=$(printf "%s" "$_code" | sed -E 's/([A-Za-z]+).*/\1/' | tr '[:lower:]' '[:upper:]')
+    _num=$(printf "%s" "$_code" | grep -Eo '[0-9]{3}' | head -n 1)
+    [ -n "$_subj" ] && [ -n "$_num" ] || return 1
+    printf "%s-%s" "$_subj" "$_num"
+}
+
+slugify() {
+    printf "%s" "$1" | tr '[:upper:]' '[:lower:]' | sed -E 's/[^a-z0-9]+/-/g; s/^-+|-+$//g; s/-{2,}/-/g'
+}
+
+sanitize_name() {
+    _name="$1"; _subj="$2"; _num="$3"
+    printf "%s" "$_name" \
+      | sed -E "s/(${_subj}[ _-]*${_num})//Ig" \
+      | sed -E 's/(lecture|tutorial|tut|notes|homework|hw|quiz|exam|midterm|final|copy)//Ig' \
+      | sed -E 's/[\[\](){}]//g' \
+      | sed -E 's/[ _.-]+/ /g' \
+      | sed -E 's/^ +| +$//g'
+}
+
+extract_lecture_number() {
+    printf "%s" "$1" | sed -nE 's/.*[Ll]ecture[ _-]*([0-9]{1,2}).*/\1/p' | head -n 1
+}
+
+# Try to detect an assignment number: "Assignment 1", "Assign-01", "A1"
+extract_assignment_number() {
+    # Match forms: Assignment 1, Assign-01, A1 (BSD sed safe)
+    printf "%s" "$1" \
+      | sed -nE 's/.*(([Aa]ssignment)|([Aa]ssign)|([Aa]))[ _-]*([0-9]{1,2}).*/\5/p' \
+      | head -n 1
+}
+
+# Try to detect a tutorial number: "Tutorial 2", "Tut-02", "T2" (BSD sed safe)
+extract_tutorial_number() {
+    printf "%s" "$1" \
+      | sed -nE 's/.*(([Tt]utorial)|([Tt]ut)|([Tt]))[ _-]*([0-9]{1,2}).*/\5/p' \
+      | head -n 1
+}
+
+unique_path() {
+    _target="$1"
+    [ ! -e "$_target" ] && { printf "%s" "$_target"; return; }
+    _base="$(dirname "$_target")"
+    _file="$(basename "$_target")"
+    _stem="${_file%.*}"
+    _ext="${_file##*.}"
+    [ "$_ext" = "$_file" ] && _ext="" || _ext=".$_ext"
+    _i=1
+    while :; do
+        _cand="$_base/${_stem}-$_i$_ext"
+        [ ! -e "$_cand" ] && { printf "%s" "$_cand"; return; }
+        _i=$((_i + 1))
+    done
+}
+
+# Read a single keypress from /dev/tty without requiring Enter
+read_key() {
+    _oldstty=$(stty -f /dev/tty -g 2>/dev/null || stty -g < /dev/tty)
+    if ! stty -f /dev/tty cbreak -echo 2>/dev/null; then
+        stty cbreak -echo < /dev/tty
+    fi
+    _k=$(dd bs=1 count=1 2>/dev/null < /dev/tty)
+    stty -f /dev/tty "$_oldstty" 2>/dev/null || stty "$_oldstty" < /dev/tty
+    printf "%s" "$_k"
+}
+
+prompt_choice() {
+    _title="$1"; _manual_ext="$2"; shift 2
+    _tmp=$(mktemp)
+    cat > "$_tmp"
+    print_box "$_title" > /dev/tty
+    _n=0
+    while IFS= read -r _line; do
+        _n=$((_n + 1))
+        printf "${BOLD}%2d)${NC} %s\n" "$_n" "$_line" > /dev/tty
+    done < "$_tmp"
+    printf "${BOLD} m)${NC} Manual rename\n" > /dev/tty
+    printf "${BOLD} s)${NC} Skip current\n" > /dev/tty
+    printf "${BOLD} q)${NC} Quit (skip rest)\n" > /dev/tty
+    printf "(Press number/m/s/q without Enter)\n\n" > /dev/tty
+    while :; do
+        printf "Choose (1-%d/m/s): " "$_n" > /dev/tty
+        _ans=$(read_key)
+        case "$_ans" in
+            q|Q) rm -f "$_tmp"; printf "\n" > /dev/tty; exit 0 ;;
+            s|S) rm -f "$_tmp"; return 2 ;;
+            m|M)
+                printf "Enter new filename: " > /dev/tty
+                if ! IFS= read -r _custom < /dev/tty; then
+                    rm -f "$_tmp" 2>/dev/null
+                    printf "\n" > /dev/tty
+                    kill -s TERM "$$" 2>/dev/null || exit 0
+                fi
+                # If user omitted extension, append the original
+                if ! printf "%s" "$_custom" | grep -q '\.'; then
+                    [ -n "$_manual_ext" ] && _custom="$_custom.$_manual_ext"
+                fi
+                printf "%s" "$_custom"
+                rm -f "$_tmp"; return 0 ;;
+            *)
+                if printf "%s" "$_ans" | grep -Eq '^[0-9]+$' && [ "$_ans" -ge 1 ] && [ "$_ans" -le "$_n" ]; then
+                    _choice=$(sed -n "${_ans}p" "$_tmp")
+                    printf "%s" "$_choice"
+                    rm -f "$_tmp"; return 0
+                fi
+                print_err "Invalid choice. Try again." > /dev/tty
+                ;;
+        esac
+    done
+}
+
+# ------------------------------ Main ----------------------------------------
+print_box "Course File Organizer"
+
+# Determine mode based on remaining args after option parsing
+shift $((OPTIND - 1))
+EXPLICIT_FILES="$*"
+
+if [ -n "$EXPLICIT_FILES" ]; then
+    print_info "Scanning: explicit file list"
+else
+    if [ -n "$REGEX_FILTER" ]; then
+        print_info "Scanning: $DOWNLOADS_DIR (filter: /$REGEX_FILTER/)"
+    else
+        print_info "Scanning: $DOWNLOADS_DIR"
+    fi
+fi
+
+# Exit whole program on Ctrl-C
+trap 'printf "\n"; print_warn "Aborted by user."; exit 130' INT
+
+if [ ! -d "$DOWNLOADS_DIR" ]; then
+    print_err "Downloads directory not found: $DOWNLOADS_DIR"
+    exit 1
+fi
+
+_files_tmp=$(mktemp)
+
+if [ -n "$EXPLICIT_FILES" ]; then
+    # Build NUL-separated list from explicit args
+    for _arg in "$@"; do
+        [ -f "$_arg" ] && printf "%s\0" "$_arg" >> "$_files_tmp"
+    done
+else
+    # Directory scan
+    find "$DOWNLOADS_DIR" -maxdepth 1 -type f -print0 > "$_files_tmp"
+    # Optional regex filter by basename
+    if [ -n "$REGEX_FILTER" ]; then
+        _filtered=$(mktemp)
+        while IFS= read -r -d '' _f; do
+            _b=$(basename "$_f")
+            echo "$_b" | grep -Eq "$REGEX_FILTER" && printf "%s\0" "$_f" >> "$_filtered"
+        done < "$_files_tmp"
+        mv "$_filtered" "$_files_tmp"
+    fi
+fi
+
+# Pre-count how many files will be processed
+_total=0
+while IFS= read -r -d '' _f; do
+    _b=$(basename "$_f")
+    _c=$(detect_course_code "$_b") || _c=""
+    [ -z "$_c" ] && continue
+    _total=$((_total + 1))
+done < "$_files_tmp"
+
+_idx=0
+while IFS= read -r -d '' _file; do
+    _basefile=$(basename "$_file")
+    _code=$(detect_course_code "$_basefile") || _code=""
+    [ -z "$_code" ] && continue
+
+    _idx=$((_idx + 1))
+
+    _subj=${_code%-*}
+    _num=${_code#*-}
+    _subj_lc=$(printf "%s" "$_subj" | tr '[:upper:]' '[:lower:]')
+    _code_slug="$_subj_lc-$_num"
+    _ext="${_basefile##*.}"
+    _name_noext="${_basefile%.*}"
+
+    print_info "Processing ($_idx/$_total): $_basefile"
+    print_ok   "Detected course: $_subj $_num"
+
+    _clean_name=$(sanitize_name "$_name_noext" "$_subj" "$_num")
+    _lecture_n=$(extract_lecture_number "$_name_noext")
+    _slug_clean=$(slugify "$_clean_name")
+    _assign_n=$(extract_assignment_number "$_name_noext")
+    _tut_n=$(extract_tutorial_number "$_name_noext")
+
+    _suggestions_file=$(mktemp)
+    {
+        if [ -n "$_assign_n" ]; then
+            printf "%s\n" "$_code_slug-assignment-$_assign_n.$_ext"
+            printf "%s\n" "$_code_slug-a$_assign_n.$_ext"
+        fi
+        if [ -n "$_tut_n" ]; then
+            printf "%s\n" "$_code_slug-tutorial-$_tut_n.$_ext"
+        fi
+        if [ -n "$_lecture_n" ]; then
+            printf "%s\n" "$_code_slug-lecture-$_lecture_n.$_ext"
+        fi
+        printf "%s\n" "$_code_slug-notes.$_ext"
+        printf "%s\n" "$_code_slug-lecture-notes.$_ext"
+        if [ -n "$_slug_clean" ]; then
+            printf "%s\n" "$_code_slug-$_slug_clean.$_ext"
+        fi
+        printf "%s\n" "$_code_slug-$(slugify "$_name_noext").$_ext"
+    } | awk 'NF' | uniq > "$_suggestions_file"
+
+    # Run prompt without a pipeline so quit can exit the whole script
+    prompt_choice "Rename Options" "$_ext" < "$_suggestions_file" > /tmp/.course_choice.$$ 2>/dev/null
+    _rc=$?
+    rm -f "$_suggestions_file" 2>/dev/null
+
+    if [ "$_rc" -eq 2 ]; then
+        print_warn "Skipped: $_basefile"
+        rm -f /tmp/.course_choice.$$
+        continue
+    fi
+
+    _new_name=$(cat /tmp/.course_choice.$$)
+    rm -f /tmp/.course_choice.$$
+    [ -z "$_new_name" ] && { print_warn "No name chosen; skipped."; continue; }
+
+    _dest_dir="$COURSES_DIR/$_code_slug"
+    mkdir -p "$_dest_dir" 2>/dev/null
+    _target="$_dest_dir/$_new_name"
+    if [ "$INCREMENT_ON_CONFLICT" -eq 1 ]; then
+        _target=$(unique_path "$_target")
+    fi
+
+    if mv -f "$_file" "$_target" 2>/dev/null; then
+        print_ok "✓ Moved to: $_target"
+    else
+        print_err "Failed to move: $_basefile"
+    fi
+done < "$_files_tmp"
+rm -f "$_files_tmp" 2>/dev/null
+
+print_ok "All done."
+
+

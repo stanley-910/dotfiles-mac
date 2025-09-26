@@ -259,7 +259,7 @@ source ~/.zsh/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
 source <(fzf --zsh)
 
 # zsh-autosuggestions configuration
-bindkey '^S' autosuggest-accept  # Ctrl+S: Accept suggestion
+bindkey '^s' autosuggest-accept  # Ctrl+S: Accept suggestion
 
 # FZF Configuration
 if command -v fd > /dev/null; then
@@ -521,3 +521,5 @@ fi
 
 # export PATH="/Applications/Ghostty.app/Contents/MacOS:$PATH"
 eval "$(zoxide init zsh)"
+
+export MANPAGER='nvim +Man!'
