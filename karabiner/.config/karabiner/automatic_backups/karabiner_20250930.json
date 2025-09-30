@@ -22,8 +22,7 @@
                                             "^com.tinyspeck.slackmacgap",
                                             "^app.zen-browser.zen",
                                             "^com.todoist.mac.Todoist",
-                                            "^com.apple.iCal",
-                                            "^md.obsidian"
+                                            "^com.apple.iCal"
                                         ],
                                         "type": "frontmost_application_if"
                                     }
@@ -55,8 +54,7 @@
                                             "^com.tinyspeck.slackmacgap",
                                             "^app.zen-browser.zen",
                                             "^com.todoist.mac.Todoist",
-                                            "^com.apple.iCal",
-                                            "^md.obsidian"
+                                            "^com.apple.iCal"
                                         ],
                                         "type": "frontmost_application_if"
                                     }
@@ -83,8 +81,7 @@
                                             "^com.tinyspeck.slackmacgap",
                                             "^app.zen-browser.zen",
                                             "^com.todoist.mac.Todoist",
-                                            "^com.apple.iCal",
-                                            "^md.obsidian"
+                                            "^com.apple.iCal"
                                         ],
                                         "type": "frontmost_application_if"
                                     }
@@ -111,8 +108,7 @@
                                             "^com.tinyspeck.slackmacgap",
                                             "^app.zen-browser.zen",
                                             "^com.todoist.mac.Todoist",
-                                            "^com.apple.iCal",
-                                            "^md.obsidian"
+                                            "^com.apple.iCal"
                                         ],
                                         "type": "frontmost_application_if"
                                     }
@@ -139,8 +135,7 @@
                                             "^com.tinyspeck.slackmacgap",
                                             "^app.zen-browser.zen",
                                             "^com.todoist.mac.Todoist",
-                                            "^com.apple.iCal",
-                                            "^md.obsidian"
+                                            "^com.apple.iCal"
                                         ],
                                         "type": "frontmost_application_if"
                                     }
@@ -167,8 +162,7 @@
                                             "^com.tinyspeck.slackmacgap",
                                             "^app.zen-browser.zen",
                                             "^com.todoist.mac.Todoist",
-                                            "^com.apple.iCal",
-                                            "^md.obsidian"
+                                            "^com.apple.iCal"
                                         ],
                                         "type": "frontmost_application_if"
                                     }
@@ -195,8 +189,7 @@
                                             "^com.tinyspeck.slackmacgap",
                                             "^app.zen-browser.zen",
                                             "^com.todoist.mac.Todoist",
-                                            "^com.apple.iCal",
-                                            "^md.obsidian"
+                                            "^com.apple.iCal"
                                         ],
                                         "type": "frontmost_application_if"
                                     }
@@ -228,8 +221,7 @@
                                             "^com.tinyspeck.slackmacgap",
                                             "^app.zen-browser.zen",
                                             "^com.todoist.mac.Todoist",
-                                            "^com.apple.iCal",
-                                            "^md.obsidian"
+                                            "^com.apple.iCal"
                                         ],
                                         "type": "frontmost_application_if"
                                     }
@@ -604,8 +596,7 @@
                                             "^com.tinyspeck.slackmacgap",
                                             "^app.zen-browser.zen",
                                             "^com.todoist.mac.Todoist",
-                                            "^com.apple.iCal",
-                                            "^md.obsidian"
+                                            "^com.apple.iCal"
                                         ],
                                         "type": "frontmost_application_if"
                                     }
@@ -789,8 +780,16 @@
                             "to": [{ "key_code": "left_control" }]
                         },
                         {
+                            "from": { "key_code": "caps_lock" },
+                            "to": [{ "key_code": "left_option" }]
+                        },
+                        {
                             "from": { "key_code": "left_control" },
                             "to": [{ "apple_vendor_top_case_key_code": "keyboard_fn" }]
+                        },
+                        {
+                            "from": { "key_code": "right_shift" },
+                            "to": [{ "key_code": "escape" }]
                         }
                     ]
                 },
@@ -808,19 +807,19 @@
                         "product_id": 50504,
                         "vendor_id": 1133
                     },
-                    "ignore_vendor_events": true
+                    "ignore": true
                 }
             ],
             "name": "Default profile",
             "selected": true,
             "simple_modifications": [
                 {
-                    "from": { "key_code": "caps_lock" },
-                    "to": [{ "key_code": "left_option" }]
+                    "from": { "key_code": "left_option" },
+                    "to": [{ "key_code": "right_command" }]
                 },
                 {
-                    "from": { "key_code": "left_option" },
-                    "to": [{ "key_code": "right_option" }]
+                    "from": { "key_code": "caps_lock" },
+                    "to": [{ "key_code": "left_option" }]
                 },
                 {
                     "from": { "key_code": "right_shift" },
