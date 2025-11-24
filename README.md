@@ -1,5 +1,7 @@
 
-# macOS dotfiles
+# dotfiles
+
+NOTE: needs updating, the below commands are kinda incorrect 
 
 Tracked via `stow`
 
