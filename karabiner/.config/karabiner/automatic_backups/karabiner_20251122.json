@@ -6,7 +6,6 @@
                 "rules": [
                     {
                         "description": "caps_lock",
-                        "enabled": false,
                         "manipulators": [
                             {
                                 "from": {
@@ -882,10 +881,6 @@
                 {
                     "from": { "key_code": "right_shift" },
                     "to": [{ "key_code": "escape" }]
-                },
-                {
-                    "from": { "key_code": "caps_lock" },
-                    "to": [{ "key_code": "left_option" }]
                 }
             ],
             "virtual_hid_keyboard": { "keyboard_type_v2": "ansi" }

@@ -259,7 +259,7 @@ source ~/.zsh/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
 source <(fzf --zsh)
 
 # zsh-autosuggestions configuration
-bindkey '^s' autosuggest-accept  # Ctrl+S: Accept suggestion
+bindkey '^S' autosuggest-accept  # Ctrl+S: Accept suggestion
 
 # FZF Configuration
 if command -v fd > /dev/null; then
@@ -314,7 +314,7 @@ export PATH="$PATH:/Users/stanley/.local/bin"
 # ==============================================================================
 
 # File and directory operations
-alias ls='eza -a --icons --git'                    # List with icons, details and git status (including hidden files)
+alias ls='eza -la --icons --git'                    # List with icons, details and git status (including hidden files)
 alias la='eza -la --icons --git --total-size'                     # List with icons and details (no hidden files)
 alias ll='eza -la --icons --git'       # List all with details, icons, git status and directory sizes
 alias v="nvim"            # Quick nvim access
@@ -329,6 +329,7 @@ alias gP='git pull'
 alias gb='git branch'
 alias gch='git checkout'
 alias gr='git remote'
+alias gg='cd "$(git rev-parse --show-toplevel)"'
 
 # Quick navigation
 alias cc='cd ~/Developer/'     # Navigate to development directory
@@ -496,6 +497,10 @@ function is_integrated_terminal() {
   if [[ -n "$CURSOR_TERM" ]]; then
     return 0
   fi
+  if [ "$ZED" = "1" ]; then
+    return 0
+  fi
+
 
   local parent_process
   # Get the parent process name
@@ -505,6 +510,7 @@ function is_integrated_terminal() {
   [[ "$parent_process" =~ "Cursor" ]] || \
   [[ "$parent_process" =~ "webstorm" ]]
   [[ "$parent_process" =~ "clion" ]]
+  [[ "$parent_process" =~ "zed" ]]
 }
 
 if [[ -z $TMUX ]] && ! is_integrated_terminal; then
@@ -517,9 +523,22 @@ if [[ -z $TMUX ]] && ! is_integrated_terminal; then
   fi
 fi
 
+# yazi function
+function y() {
+  local tmp="$(mktemp -t "yazi-cwd.XXXXXX")" cwd
+  yazi "$@" --cwd-file="$tmp"
+  IFS= read -r -d '' cwd < "$tmp"
+  [ -n "$cwd" ] && [ "$cwd" != "$PWD" ] && builtin cd -- "$cwd"
+  rm -f -- "$tmp"
+}
 
 
 # export PATH="/Applications/Ghostty.app/Contents/MacOS:$PATH"
 eval "$(zoxide init zsh)"
 
 export MANPAGER='nvim +Man!'
+
+# Added by LM Studio CLI (lms)
+export PATH="$PATH:/Users/stanley/.lmstudio/bin"
+# End of LM Studio CLI section
+

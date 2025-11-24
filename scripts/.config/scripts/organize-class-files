@@ -147,15 +147,25 @@ prompt_choice() {
         printf "${BOLD}%2d)${NC} %s\n" "$_n" "$_line" > /dev/tty
     done < "$_tmp"
     printf "${BOLD} m)${NC} Manual rename\n" > /dev/tty
+    if [ -n "$KEEP_PREVIEW" ]; then
+        printf "${BOLD} k)${NC} Keep name (%s)\n" "$KEEP_PREVIEW" > /dev/tty
+    else
+        printf "${BOLD} k)${NC} Keep name\n" > /dev/tty
+    fi
+    printf "${BOLD} d)${NC} Delete file\n" > /dev/tty
     printf "${BOLD} s)${NC} Skip current\n" > /dev/tty
     printf "${BOLD} q)${NC} Quit (skip rest)\n" > /dev/tty
-    printf "(Press number/m/s/q without Enter)\n\n" > /dev/tty
+    printf "(Press number/m/k/d/s/q without Enter)\n\n" > /dev/tty
     while :; do
-        printf "Choose (1-%d/m/s): " "$_n" > /dev/tty
+        printf "Choose (1-%d/m/k/d/s): " "$_n" > /dev/tty
         _ans=$(read_key)
         case "$_ans" in
             q|Q) rm -f "$_tmp"; printf "\n" > /dev/tty; exit 0 ;;
             s|S) rm -f "$_tmp"; return 2 ;;
+            k|K)
+                rm -f "$_tmp"; return 3 ;;
+            d|D)
+                rm -f "$_tmp"; return 4 ;;
             m|M)
                 printf "Enter new filename: " > /dev/tty
                 if ! IFS= read -r _custom < /dev/tty; then
@@ -260,6 +270,19 @@ while IFS= read -r -d '' _file; do
     _assign_n=$(extract_assignment_number "$_name_noext")
     _tut_n=$(extract_tutorial_number "$_name_noext")
 
+    # Prepare preview for "Keep name" as a slug including course code,
+    # but only remove the course token; keep words like "midterm"
+    _keep_raw=$(printf "%s" "$_name_noext" \
+      | sed -E "s/(${_subj}[ _-]*${_num})//Ig" \
+      | sed -E 's/[ _.-]+/ /g' \
+      | sed -E 's/^ +| +$//g')
+    _keep_slug=$(slugify "$_keep_raw")
+    _keep_slug_base="$_code_slug"
+    if [ -n "$_keep_slug" ]; then
+        _keep_slug_base="$_code_slug-$_keep_slug"
+    fi
+    KEEP_PREVIEW="$_keep_slug_base"
+
     _suggestions_file=$(mktemp)
     {
         if [ -n "$_assign_n" ]; then
@@ -289,11 +312,27 @@ while IFS= read -r -d '' _file; do
         print_warn "Skipped: $_basefile"
         rm -f /tmp/.course_choice.$$
         continue
+    elif [ "$_rc" -eq 4 ]; then
+        # Delete the file and continue
+        if rm -f "$_file" 2>/dev/null; then
+            print_ok "✓ Deleted: $_basefile"
+        else
+            print_err "Failed to delete: $_basefile"
+        fi
+        rm -f /tmp/.course_choice.$$
+        continue
+    elif [ "$_rc" -eq 3 ]; then
+        # Keep name but lint to slug (lowercase, dashes), preserve extension
+        _new_name="$_keep_slug_base"
+        if [ -n "$_ext" ] && [ "$_ext" != "$_basefile" ]; then
+            _new_name="$_new_name.$_ext"
+        fi
+        rm -f /tmp/.course_choice.$$
+    else
+        _new_name=$(cat /tmp/.course_choice.$$)
+        rm -f /tmp/.course_choice.$$
+        [ -z "$_new_name" ] && { print_warn "No name chosen; skipped."; continue; }
     fi
-
-    _new_name=$(cat /tmp/.course_choice.$$)
-    rm -f /tmp/.course_choice.$$
-    [ -z "$_new_name" ] && { print_warn "No name chosen; skipped."; continue; }
 
     _dest_dir="$COURSES_DIR/$_code_slug"
     mkdir -p "$_dest_dir" 2>/dev/null

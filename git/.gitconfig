@@ -1,6 +1,7 @@
 [user]
 	name = Stanley Wang
-	email = stanley.wang@autodesk.com
+	; email = stanley.wang@autodesk.com
+	email = wangstanley910@gmail.com
 
 [filter "lfs"]
 	required = true
@@ -19,7 +20,7 @@
 [branch]
 	sort = -committerdate
 [core]
-	excludesfile = /Users/wangs3/.gitignore_global
+	excludesfile = /Users/stanley/.gitignore_global
 [push]
 	autoSetupRemote = true
 [pull]
