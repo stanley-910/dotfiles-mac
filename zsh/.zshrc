@@ -533,9 +533,14 @@ function y() {
 }
 
 
+mkf() {
+    mkdir -p "$(dirname "$1")" && touch "$1"
+}
+
 # export PATH="/Applications/Ghostty.app/Contents/MacOS:$PATH"
 eval "$(zoxide init zsh)"
 
+# use nvim as man page reader
 export MANPAGER='nvim +Man!'
 
 # Added by LM Studio CLI (lms)

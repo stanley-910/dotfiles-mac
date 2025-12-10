@@ -91,6 +91,7 @@
       "x i '": ["workspace::SendKeystrokes", "v i ' shift-p"],
       "x i \"": ["workspace::SendKeystrokes", "v i \" shift-p"],
       "x i `": ["workspace::SendKeystrokes", "v i ` shift-p"],
+      "x i a": ["workspace::SendKeystrokes", "v i a shift-p"],
 
       // Around text object replacements (x + a + object = replace around)
       "x a w": ["workspace::SendKeystrokes", "v a w shift-p"],
@@ -105,6 +106,7 @@
       "x a '": ["workspace::SendKeystrokes", "v a ' shift-p"],
       "x a \"": ["workspace::SendKeystrokes", "v a \" shift-p"],
       "x a `": ["workspace::SendKeystrokes", "v a ` shift-p"],
+      "x a a": ["workspace::SendKeystrokes", "v a a shift-p"],
 
       // Replace to end of line
       "shift-x": ["workspace::SendKeystrokes", "v $ shift-p"]
@@ -382,19 +384,19 @@
   {
     "context": "Workspace",
     "bindings": {
-      "ctrl-shift-d": "debugger::Rerun"
+      "ctrl-alt-shift-d": "debugger::Rerun"
     }
   },
   {
     "context": "Workspace",
     "bindings": {
-      "ctrl-shift-c": "debugger::Continue"
+      "ctrl-alt-shift-c": "debugger::Continue"
     }
   },
   {
     "context": "Workspace",
     "bindings": {
-      "ctrl-alt-shift-i": "debugger::StepInto"
+      "ctrl-alt-shift-j": "debugger::StepInto"
     }
   },
   {
@@ -406,7 +408,7 @@
   {
     "context": "Workspace",
     "bindings": {
-      "ctrl-alt-shift-o": "debugger::StepOut"
+      "ctrl-alt-shift-k": "debugger::StepOut"
     }
   },
   {
@@ -505,7 +507,38 @@
     "context": "Editor && vim_mode == insert && (extension == c)",
     "bindings": {
       "ctrl-.": ["workspace::SendKeystrokes", "- >"],
-      "ctrl-b": ["workspace::SendKeystrokes", "( ) left"]
+      "ctrl-b": ["workspace::SendKeystrokes", "( ) left"],
+      "ctrl-=": ["workspace::SendKeystrokes", "f = y s i w space"]
+    }
+  },
+  {
+    "context": "Editor && vim_mode == normal",
+    "bindings": {
+      "ctrl-=": ["workspace::SendKeystrokes", "^ f = y s i w space"],
+      "ctrl-+": ["workspace::SendKeystrokes", "^ f = h x l x h"]
+    }
+  },
+  {
+    "context": "(VimControl && !menu)",
+    "bindings": {
+      "alt-q": "pane::GoBack"
+    }
+  },
+  {
+    "context": "(VimControl && !menu)",
+    "bindings": {
+      "alt-d": "pane::GoForward"
+    }
+  },
+  {
+    "context": "Workspace",
+    "bindings": {
+      "ctrl-alt-shift-q": "editor::ToggleBreakpoint"
+    }
+  },
+  {
+    "bindings": {
+      "alt-cmd-<": "zed::OpenKeymapFile"
     }
   }
 ]
