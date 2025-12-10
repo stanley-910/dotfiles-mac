@@ -1,1 +1,4 @@
-show_hidden = true
+[opener]
+edit = [
+    { run = 'nvim "$@"', desc = "nvim", block = true, for = "unix" },
+    ]
