@@ -81,10 +81,10 @@ brew "tree"
 # Document Viewers
 # ============================================================================
 
-# Zathura - Lightweight PDF viewer
-tap "homebrew-zathura/zathura"
-brew "zathura"
-brew "zathura-pdf-mupdf"
+# # Zathura - Lightweight PDF viewer
+# tap "homebrew-zathura/zathura"
+# brew "zathura"
+# brew "zathura-pdf-mupdf"
 
 # ============================================================================
 # GUI Applications (Casks)

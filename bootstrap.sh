@@ -86,18 +86,11 @@ else
     exit 1
 fi
 
-# Link Zathura plugins if installed
-if command -v zathura &> /dev/null; then
-    info "Linking Zathura plugins..."
-    d=$(brew --prefix zathura)/lib/zathura
-    mkdir -p "$d"
-    for plugin in pdf-mupdf pdf-poppler cb djvu ps; do
-        plugin_path=$(brew --prefix zathura-$plugin 2>/dev/null)/lib$plugin.dylib
-        if [[ -f "$plugin_path" ]]; then
-            ln -sf "$plugin_path" "$d/"
-            success "Linked zathura-$plugin"
-        fi
-    done
+# Install yazi plugins if yazi is installed
+if command -v yazi &> /dev/null; then
+    info "Installing yazi plugins..."
+    ya pack -a dedukun/bookmarks
+    success "Yazi plugins installed"
 fi
 
 # ============================================================================
