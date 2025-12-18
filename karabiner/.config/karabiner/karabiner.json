@@ -187,7 +187,6 @@
                                             "^app.zen-browser.zen",
                                             "^com.todoist.mac.Todoist",
                                             "^com.apple.iCal",
-                                            "^md.obsidian",
                                             "^com.chabomakers.Antinote"
                                         ],
                                         "type": "frontmost_application_if"
@@ -198,6 +197,25 @@
                                     "modifiers": { "mandatory": ["control"] }
                                 },
                                 "to": [{ "key_code": "return_or_enter" }],
+                                "type": "basic"
+                            },
+                            {
+                                "conditions": [
+                                    {
+                                        "bundle_identifiers": [
+                                            "^md.obsidian"
+                                        ],
+                                        "type": "frontmost_application_if"
+                                    }
+                                ],
+                                "from": {
+                                    "key_code": "s",
+                                    "modifiers": { "mandatory": ["control"] }
+                                },
+                                "to": [{ 
+                                    "key_code": "return_or_enter",
+                                    "modifiers": ["control"]
+                                }],
                                 "type": "basic"
                             },
                             {
