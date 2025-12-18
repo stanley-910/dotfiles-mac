@@ -138,6 +138,7 @@ cask "monitorcontrol"    # External monitor brightness/volume control
 cask "mos"               # Smooth scrolling and mouse control
 
 # Nerd Fonts - Fonts with icons for terminal
+# Note: Fonts are now part of homebrew-cask (no separate tap needed)
 cask "font-hack-nerd-font"
 cask "font-symbols-only-nerd-font"
 

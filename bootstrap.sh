@@ -79,11 +79,25 @@ fi
 info "Installing dependencies from Brewfile..."
 
 if [ -f "Brewfile" ]; then
-    brew bundle install
+    brew bundle install --verbose
     success "All Homebrew dependencies installed!"
 else
     error "Brewfile not found in current directory!"
     exit 1
+fi
+
+# Link Zathura plugins if installed
+if command -v zathura &> /dev/null; then
+    info "Linking Zathura plugins..."
+    d=$(brew --prefix zathura)/lib/zathura
+    mkdir -p "$d"
+    for plugin in pdf-mupdf pdf-poppler cb djvu ps; do
+        plugin_path=$(brew --prefix zathura-$plugin 2>/dev/null)/lib$plugin.dylib
+        if [[ -f "$plugin_path" ]]; then
+            ln -sf "$plugin_path" "$d/"
+            success "Linked zathura-$plugin"
+        fi
+    done
 fi
 
 # ============================================================================
@@ -187,7 +201,7 @@ SELECTIVE_STOW_DIRS=(karabiner tmux yazi zed)
 for dir in "${FULL_STOW_DIRS[@]}"; do
     if [ -d "$dir" ]; then
         info "Simulating stow for: $dir"
-        stow --simulate --verbose=1 "$dir" 2>&1 || true
+        stow --simulate --no-folding -v "$dir" 2>&1 || true
     fi
 done
 
@@ -195,7 +209,7 @@ done
 for dir in "${SELECTIVE_STOW_DIRS[@]}"; do
     if [ -d "$dir" ]; then
         info "Simulating selective stow for: $dir (config files only)"
-        stow --simulate --verbose=1 "$dir" 2>&1 || true
+        stow --simulate --no-folding -v "$dir" 2>&1 || true
     fi
 done
 
@@ -218,7 +232,7 @@ info "Proceeding with actual stow..."
 for dir in "${FULL_STOW_DIRS[@]}"; do
     if [ -d "$dir" ]; then
         info "Stowing: $dir"
-        stow --restow --verbose=1 "$dir"
+        stow --restow --no-folding -v "$dir"
     fi
 done
 
@@ -226,7 +240,7 @@ done
 for dir in "${SELECTIVE_STOW_DIRS[@]}"; do
     if [ -d "$dir" ]; then
         info "Stowing config files from: $dir"
-        stow --restow --verbose=1 "$dir"
+        stow --restow --no-folding -v "$dir"
     fi
 done
 
@@ -272,7 +286,7 @@ echo ""
 echo "  1. ${YELLOW}Restart your terminal${NC} or run: ${BLUE}source ~/.zshrc${NC}"
 echo ""
 echo "  2. ${YELLOW}Install tmux plugins:${NC}"
-echo "     - Open tmux: ${BLUE}tmux${NC}"
+echo en tmux: ${BLUE}tmux${NC}"
 echo "     - Press: ${BLUE}prefix + I${NC} (capital I) to install plugins"
 echo "     - Default prefix is ${BLUE}Ctrl+b${NC}"
 echo ""
