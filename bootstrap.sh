@@ -88,9 +88,14 @@ fi
 
 # Install yazi plugins if yazi is installed
 if command -v yazi &> /dev/null; then
-    info "Installing yazi plugins..."
-    ya pkg add dedukun/bookmarks
-    success "Yazi plugins installed"
+    # Check if bookmarks plugin is already in package.toml
+    if [ -f ~/.config/yazi/package.toml ] && grep -q "dedukun/bookmarks" ~/.config/yazi/package.toml; then
+        info "Yazi bookmarks plugin already installed, skipping..."
+    else
+        info "Installing yazi plugins..."
+        ya pkg add dedukun/bookmarks
+        success "Yazi plugins installed"
+    fi
 fi
 
 # ============================================================================
