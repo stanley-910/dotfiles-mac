@@ -89,7 +89,7 @@ fi
 # Install yazi plugins if yazi is installed
 if command -v yazi &> /dev/null; then
     info "Installing yazi plugins..."
-    ya pack -a dedukun/bookmarks
+    ya pkg add dedukun/bookmarks
     success "Yazi plugins installed"
 fi
 
