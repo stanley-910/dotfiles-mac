@@ -1,27 +1,198 @@
-
 # dotfiles
 
-NOTE: needs updating, the below commands are kinda incorrect 
+Personal macOS development environment configuration managed with [GNU Stow](https://www.gnu.org/software/stow/).
 
-Tracked via `stow`
+This repository contains configurations for shell, terminal, editors, and various development tools. It's designed for quick restoration of your dev environment on a fresh macOS install.
 
-Steps to setup:
+## Quick Start (Fresh macOS Install)
 
-```sh
+### 1. Install Homebrew
 
-brew install stow 
-git clone git@github.com:stanley-910/dotfiles-mac.git ~/dotfiles-mac
-cd dotfiles-mac
-
-# existing .config, updating
-stow --adopt * 
-git restore . 
-
-# fresh start
-stow *
+```bash
+/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
 ```
 
-Sets up symlinks into `.config/` and will automatically ignore READMEs.
+### 2. Clone this repository
 
-View subdirectory READMEs for package specific set up information.
+```bash
+git clone https://github.com/yourusername/dotfiles.git ~/dotfiles
+cd ~/dotfiles
+```
 
+### 3. Run the bootstrap script
+
+```bash
+./bootstrap.sh
+```
+
+This will:
+- Install all dependencies (CLI tools, GUI apps) via Homebrew
+- Clone ZSH plugins and tmux plugin manager
+- Create necessary directories
+- Run stow simulation to check for conflicts
+- Ask for confirmation before creating symlinks
+- Symlink all dotfiles using GNU Stow
+- Set ZSH as your default shell
+
+### 4. Restart your terminal
+
+```bash
+# Source the new configuration
+source ~/.zshrc
+
+# Or restart your terminal application
+```
+
+## What's Included
+
+### Shell & Terminal
+- **ZSH** - Shell with plugins (autosuggestions, syntax highlighting, fzf-tab)
+- **Starship** - Cross-shell prompt
+- **Ghostty** - Modern GPU-accelerated terminal
+- **tmux** - Terminal multiplexer
+
+### Modern CLI Tools
+- **eza** - Enhanced `ls` with git integration
+- **bat** - Enhanced `cat` with syntax highlighting
+- **fzf** - Fuzzy finder for files and commands
+- **zoxide** - Smart directory jumper
+- **ripgrep** - Fast code search
+- **fd** - Modern `find` alternative
+- **yazi** - Terminal file manager
+- **tree** - Directory tree viewer
+
+### Core Development Tools
+- **Neovim** - Modern vim-based editor
+- **FFmpeg** - Multimedia processing
+- **jq** - JSON processor
+
+### Editors & IDEs
+- **Cursor** - AI-powered code editor
+- **Zed** - Modern code editor
+- **JetBrains** - IDE configurations (IdeaVim)
+
+### System Tools
+- **Karabiner-Elements** - Keyboard customization
+- **fastfetch** - System information display
+- **Zathura** - Lightweight PDF viewer
+- **Git** - Version control with custom config
+
+## Manual Setup (Updating Existing Config)
+
+If you're updating an existing setup or want more control:
+
+```bash
+# Install GNU Stow
+brew install stow
+
+# Clone the repository
+git clone https://github.com/yourusername/dotfiles.git ~/dotfiles
+cd ~/dotfiles
+
+# For existing .config (adopt and restore)
+stow --adopt */
+git restore .
+
+# For fresh start (just symlink)
+stow */
+```
+
+## Post-Installation
+
+### Install tmux plugins
+1. Open tmux: `tmux`
+2. Press `prefix + I` (capital I) to install plugins
+3. Default prefix is `Ctrl+b`
+
+### Configure Git (if needed)
+```bash
+git config --global user.name "Your Name"
+git config --global user.email "your.email@example.com"
+```
+
+### Grant GUI app permissions
+- **Karabiner-Elements**: System Settings → Privacy & Security → Accessibility & Input Monitoring
+
+## Directory Structure
+
+Each subdirectory represents a tool:
+
+```
+dotfiles/
+├── zsh/           # ZSH config (.zshrc, .zprofile, .zshenv)
+├── git/           # Git config and global gitignore
+├── tmux/          # Tmux config (plugins excluded via .stow-local-ignore)
+├── yazi/          # Yazi config (plugins excluded)
+├── karabiner/     # Karabiner config (backups excluded)
+├── zed/           # Zed config (extensions excluded)
+├── starship/      # Starship prompt config
+├── ghostty/       # Ghostty terminal config
+├── cursor/        # Cursor editor settings
+├── jetbrains/     # IdeaVim configuration
+├── zathura/       # Zathura PDF viewer config
+├── fastfetch/     # Fastfetch system info config
+├── scripts/       # Custom utility scripts
+└── setups/        # Legacy setup scripts (reference)
+```
+
+View individual `README.md` files in each subdirectory for tool-specific details.
+
+## How It Works
+
+This repository uses **GNU Stow** to manage dotfiles:
+- Each subdirectory contains configuration files in their expected structure
+- Stow creates symlinks from `~` (home directory) to files in this repo
+- Changes to files in this repo are immediately reflected in your system
+- Commit and push changes to keep your dotfiles in sync across machines
+
+## Customization
+
+### Installing Optional Development Tools
+
+Edit `Brewfile` and uncomment languages/tools you need, then run:
+```bash
+brew bundle install
+```
+
+### External Dependencies
+
+Additional packages you may want are in `Brewfile.external`:
+```bash
+brew bundle install --file=Brewfile.external
+```
+
+This includes:
+- Extra development languages (Python 3.12/3.13/3.14, Node, Crystal)
+- Additional utilities (neovim, screen, nmap, rsync)
+- macOS GUI apps (alt-tab, betterdisplay, monitorcontrol)
+- Fonts (Hack Nerd Font)
+
+Review and customize before installing.
+
+## Important: Plugin Pollution Prevention
+
+Some tools (tmux, yazi, karabiner, zed) use `.stow-local-ignore` files to prevent plugin directories from being symlinked. This keeps your dotfiles clean - only configuration files are tracked, not installed plugins or cache.
+
+## Troubleshooting
+
+### Stow conflicts
+If stow reports conflicts, backup the existing files:
+```bash
+mv ~/.zshrc ~/.zshrc.backup
+stow --restow */
+```
+
+### ZSH not default shell
+```bash
+chsh -s $(which zsh)
+```
+
+### Homebrew not in PATH (Apple Silicon)
+```bash
+echo 'eval "$(/opt/homebrew/bin/brew shellenv)"' >> ~/.zprofile
+source ~/.zprofile
+```
+
+## License
+
+Personal dotfiles - feel free to use, modify, or learn from them!

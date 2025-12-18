@@ -1,0 +1,140 @@
+# Dotfiles Brewfile
+# Install all dependencies with: brew bundle install
+
+# ============================================================================
+# Taps - Additional Homebrew repositories
+# ============================================================================
+tap "homebrew/cask-fonts"
+
+# ============================================================================
+# Essential Tools - Required for dotfiles setup
+# ============================================================================
+
+# GNU Stow - Symlink manager for dotfiles
+brew "stow"
+
+# Git - Version control (usually pre-installed, but ensures latest version)
+brew "git"
+
+# ============================================================================
+# Modern CLI Tools - Enhanced replacements for Unix utilities
+# ============================================================================
+
+# eza - Modern replacement for ls with git integration and colors
+brew "eza"
+
+# bat - Modern cat replacement with syntax highlighting
+brew "bat"
+
+# fd - Modern find replacement, faster and more user-friendly
+brew "fd"
+
+# ripgrep - Fast grep alternative for searching code
+brew "ripgrep"
+
+# fzf - Fuzzy finder for command-line
+brew "fzf"
+
+# zoxide - Smart directory jumper (cd replacement)
+brew "zoxide"
+
+# ============================================================================
+# Shell and Terminal Enhancement
+# ============================================================================
+
+# starship - Cross-shell prompt with customization
+brew "starship"
+
+# thefuck - Command correction tool
+brew "thefuck"
+
+# tmux - Terminal multiplexer for managing multiple terminal sessions
+brew "tmux"
+
+# ============================================================================
+# System Utilities
+# ============================================================================
+
+# fastfetch - System information tool (neofetch alternative)
+brew "fastfetch"
+
+# yazi - Terminal file manager
+brew "yazi"
+
+# ============================================================================
+# Core Development Tools
+# ============================================================================
+
+# Neovim - Modern Vim-based text editor
+brew "neovim"
+
+# FFmpeg - Multimedia processing
+brew "ffmpeg"
+
+# jq - JSON processor
+brew "jq"
+
+# tree - Directory listing in tree format
+brew "tree"
+
+# ============================================================================
+# Document Viewers
+# ============================================================================
+
+# Zathura - Lightweight PDF viewer
+tap "zegervdv/zathura"
+brew "zathura"
+brew "zathura-pdf-mupdf"
+brew "zathura-pdf-poppler"
+
+# ============================================================================
+# GUI Applications (Casks)
+# ============================================================================
+
+# Ghostty - Modern GPU-accelerated terminal emulator
+cask "ghostty"
+
+# Karabiner-Elements - Keyboard customization tool
+cask "karabiner-elements"
+
+# Zed - Modern code editor
+cask "zed"
+
+# Cursor - AI-powered code editor
+cask "cursor"
+
+# ============================================================================
+# Optional Development Tools & Languages
+# Uncomment the ones you need
+# ============================================================================
+
+# Node.js - JavaScript runtime
+# brew "node@20"
+
+# Python - Programming language
+# brew "python@3.12"
+
+# Rust - Systems programming language (includes cargo)
+# brew "rust"
+
+# Go - Programming language
+# brew "go"
+
+# Ruby version manager
+# brew "rbenv"
+
+# Python package manager for isolated app installations
+# brew "pipx"
+
+# Python environment manager
+# brew "pyenv"
+
+# ============================================================================
+# Optional Fonts
+# Uncomment if you want to install Nerd Fonts for terminal icons
+# ============================================================================
+
+# cask "font-fira-code-nerd-font"
+# cask "font-jetbrains-mono-nerd-font"
+# cask "font-meslo-lg-nerd-font"
+

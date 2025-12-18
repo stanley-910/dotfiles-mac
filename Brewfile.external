@@ -1,0 +1,160 @@
+# ============================================================================
+# External Brewfile - Additional system packages
+# ============================================================================
+# This file contains packages that are not directly required by dotfiles
+# but are useful development tools and system utilities you had installed.
+#
+# Install with: brew bundle install --file=Brewfile.external
+#
+# Review this file and comment out anything you don't need on your fresh install.
+# ============================================================================
+
+# ============================================================================
+# Development Languages & Runtimes
+# ============================================================================
+
+# Node.js - JavaScript runtime (specific version you had)
+brew "node@20"
+
+# Python versions - You had multiple versions installed
+brew "python@3.12"
+brew "python@3.13"
+brew "python@3.14"
+
+# Python package managers
+brew "pipx"              # Install Python applications in isolated environments
+
+# Language package managers
+brew "yarn"              # JavaScript package manager (alternative to npm)
+
+# Other language tooling
+brew "rust-analyzer"     # Rust language server
+
+# Compiled languages
+brew "crystal"           # Crystal programming language
+
+# ============================================================================
+# Text Editors & Development Tools
+# ============================================================================
+
+# Neovim - Hyperextensible Vim-based text editor
+brew "neovim"
+
+# Typst - Modern markup-based typesetting system
+brew "typst"
+
+# ============================================================================
+# Document & PDF Tools
+# ============================================================================
+
+# Zathura - Lightweight PDF viewer
+brew "zathura"
+brew "zathura-pdf-mupdf"
+brew "zathura-pdf-poppler"
+
+# MuPDF - Lightweight PDF and XPS viewer
+brew "mupdf"
+
+# ============================================================================
+# Terminal Tools & Utilities
+# ============================================================================
+
+# Terminal multiplexers and session managers
+brew "screen"            # Terminal multiplexer (alternative to tmux)
+
+# Terminal toys and visualizations
+brew "cbonsai"           # Bonsai tree generator for terminal
+brew "cmatrix"           # Matrix screensaver effect
+brew "pipes-sh"          # Animated pipes screensaver
+
+# Keyboard utilities
+brew "showkey"           # Show keys being pressed
+
+# Tree - Directory listing in tree format
+brew "tree"
+
+# ============================================================================
+# System Utilities
+# ============================================================================
+
+# Network tools
+brew "nmap"              # Network exploration and security auditing
+brew "telnet"            # Telnet client
+brew "rsync"             # Fast incremental file transfer
+
+# Archive tools
+brew "sevenzip"          # 7-Zip file archiver
+
+# ============================================================================
+# Build Tools & Libraries
+# ============================================================================
+
+# Build systems
+brew "cmake"             # Cross-platform build system
+brew "meson"             # Fast build system
+brew "ninja"             # Small build system focused on speed
+
+# Compilers
+brew "gcc"               # GNU Compiler Collection
+brew "llvm"              # LLVM compiler infrastructure
+
+# ============================================================================
+# Version Control & Git Tools
+# ============================================================================
+
+# Git LFS (Large File Storage) - Implied by git config
+# brew "git-lfs"         # Uncomment if you use Git LFS
+
+# ============================================================================
+# Multimedia Tools
+# ============================================================================
+
+# FFmpeg - Complete multimedia solution
+brew "ffmpeg"
+
+# Image processing
+brew "imagemagick"       # Image manipulation tools
+
+# ============================================================================
+# Database & Data Tools
+# ============================================================================
+
+# SQLite - Embedded database
+brew "sqlite"
+
+# JQ - JSON processor
+brew "jq"
+
+# ============================================================================
+# macOS GUI Applications (Casks)
+# ============================================================================
+
+# System utilities you had installed
+cask "alt-tab"           # Windows-style alt-tab window switcher
+cask "betterdisplay"     # Display management tool
+cask "fluor"             # Function key mode switcher
+cask "keycastr"          # Keystroke visualizer
+cask "monitorcontrol"    # External monitor brightness/volume control
+cask "mos"               # Smooth scrolling and mouse control
+
+# Nerd Fonts - Fonts with icons for terminal
+cask "font-hack-nerd-font"
+cask "font-symbols-only-nerd-font"
+
+# ============================================================================
+# Optional: Package Managers for Other Languages
+# ============================================================================
+
+# Uncomment if you use these languages:
+# brew "opam"            # OCaml package manager (you have this installed)
+# brew "rbenv"           # Ruby version manager
+
+# ============================================================================
+# Notes
+# ============================================================================
+# Many libraries (gtk+3, cairo, glib, etc.) are dependencies and will be
+# automatically installed by the packages above. They're not listed separately.
+#
+# Review and uncomment Git LFS if you use it in your repos.
+# ============================================================================
+
