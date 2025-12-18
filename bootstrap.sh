@@ -247,19 +247,7 @@ done
 success "Dotfiles symlinked successfully!"
 
 # ============================================================================
-# Step 8: Setup fzf key bindings and completion
-# ============================================================================
-
-info "Setting up fzf shell integration..."
-
-if command -v fzf &> /dev/null; then
-    # Run fzf install script for shell integration
-    $(brew --prefix)/opt/fzf/install --key-bindings --completion --no-update-rc
-    success "fzf shell integration configured"
-fi
-
-# ============================================================================
-# Step 9: Set ZSH as default shell (if not already)
+# Step 8: Set ZSH as default shell (if not already)
 # ============================================================================
 
 info "Checking default shell..."
@@ -283,20 +271,20 @@ echo "======================================================================"
 echo ""
 info "Next steps:"
 echo ""
-echo "  1. ${YELLOW}Restart your terminal${NC} or run: ${BLUE}source ~/.zshrc${NC}"
+echo "  1. Restart your terminal or run: source ~/.zshrc"
 echo ""
-echo "  2. ${YELLOW}Install tmux plugins:${NC}"
-echo "     - Open tmux: ${BLUE}tmux${NC}"
-echo "     - Press: ${BLUE}prefix + I${NC} (capital I) to install plugins"
-echo "     - Default prefix is ${BLUE}Ctrl+b${NC}"
+echo "  2. Install tmux plugins:"
+echo "     - Open tmux: tmux"
+echo "     - Press: prefix + I (capital I) to install plugins"
+echo "     - Default prefix is Ctrl+b"
 echo ""
-echo "  3. ${YELLOW}Grant permissions for GUI apps:${NC}"
-echo "     - ${BLUE}Karabiner-Elements:${NC} Needs Accessibility & Input Monitoring permissions"
+echo "  3. Grant permissions for GUI apps:"
+echo "     - Karabiner-Elements: Needs Accessibility & Input Monitoring permissions"
 echo "     - Open System Settings → Privacy & Security → Accessibility"
 echo ""
-echo "  4. ${YELLOW}Optional: Configure Git user${NC}"
-echo "     ${BLUE}git config --global user.name \"Your Name\"${NC}"
-echo "     ${BLUE}git config --global user.email \"your.email@example.com\"${NC}"
+echo "  4. Optional: Configure Git user"
+echo "     git config --global user.name \"Your Name\""
+echo "     git config --global user.email \"your.email@example.com\""
 echo ""
 echo "======================================================================"
 info "For tool-specific setup info, check the README files in each subdirectory"
