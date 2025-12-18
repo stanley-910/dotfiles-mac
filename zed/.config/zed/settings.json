@@ -126,7 +126,7 @@
   "gutter": {
     "min_line_number_digits": 2
   },
-  "relative_line_numbers": true,
+  "relative_line_numbers": "enabled",
   "auto_signature_help": false,
   "vertical_scroll_margin": 8.0,
   "excerpt_context_lines": 2,
@@ -147,7 +147,7 @@
   "theme": {
     "mode": "system",
     "light": "Gruvbox Light",
-    "dark": "Gruvbox Crisp Highest Contrast"
+    "dark": "Gruvbox Dark"
   },
   "lsp": {
     "tinymist": {
