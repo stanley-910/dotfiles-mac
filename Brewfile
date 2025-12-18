@@ -1,10 +1,10 @@
 # Dotfiles Brewfile
 # Install all dependencies with: brew bundle install
 
-# ============================================================================
-# Taps - Additional Homebrew repositories
-# ============================================================================
-tap "homebrew/cask-fonts"
+# # ============================================================================
+# # Taps - Additional Homebrew repositories
+# # ============================================================================
+# tap "homebrew/cask-fonts"
 
 # ============================================================================
 # Essential Tools - Required for dotfiles setup
