@@ -22,7 +22,11 @@
     },
     "model_parameters": []
   },
-  "icon_theme": "Colored Zed Icons Theme Dark",
+  "icon_theme": {
+    "mode": "dark",
+    "light": "Colored Zed Icons Theme Dark",
+    "dark": "Colored Zed Icons Theme Dark"
+  },
   "restore_on_startup": "last_workspace",
   "scroll_beyond_last_line": "vertical_scroll_margin",
   "git_panel": {
@@ -145,7 +149,7 @@
   "buffer_font_size": 17.0,
   "buffer_font_features": { "calt": false },
   "theme": {
-    "mode": "system",
+    "mode": "dark",
     "light": "Gruvbox Light",
     "dark": "Gruvbox Crisp Highest Contrast"
   },

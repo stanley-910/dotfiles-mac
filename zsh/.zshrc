@@ -160,10 +160,10 @@ bindkey "^e" end-of-line
 bindkey '^Z' undo                     # Ctrl+Z: Undo last action
 bindkey '^y' yank                     # Ctrl+Y: Paste from kill ring
 
+
 # Vi mode specific bindings
 bindkey -M viins 'kj' vi-cmd-mode     # kj: Enter command mode from insert
 bindkey -M vicmd 'y' vi-yank-xclip    # y: Yank to system clipboard
-bindkey -M vicmd 'p' paste-from-clipboard # p: Paste from clipboard
 bindkey -M viins '^C' vi-cmd-mode     # Ctrl+C: Enter command mode
 bindkey '^?' backward-delete-char     # Backspace: Delete character backward
 bindkey '^v' edit-command-line        # Ctrl+V: Edit command in $EDITOR

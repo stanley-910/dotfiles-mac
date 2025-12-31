@@ -86,12 +86,6 @@ else
     exit 1
 fi
 
-# Install yazi plugins if yazi is installed
-if command -v yazi &> /dev/null; then
-    info "Installing yazi plugins..."
-    ya pkg add dedukun/bookmarks || true
-    success "Yazi plugin setup complete"
-fi
 
 # ============================================================================
 # Step 3: Create necessary directories
@@ -145,11 +139,19 @@ else
 fi
 
 # ============================================================================
-# Step 5: Setup tmux plugin manager
+# Step 5: Setup tmux and plugin manager
 # ============================================================================
 
-info "Setting up tmux plugin manager (tpm)..."
 
+if [ -f ~/.config/tmux/tmux.conf ]; then
+    tmux source-file ~/.config/tmux/tmux.conf
+    success "Sourced tmux configuration file"
+else
+    warn "tmux configuration file not found"
+fi
+
+
+info "Setting up tmux plugin manager (tpm)..."
 if [ ! -d ~/.tmux/plugins/tpm ]; then
     git clone https://github.com/tmux-plugins/tpm ~/.tmux/plugins/tpm
     success "Installed tmux plugin manager"
@@ -184,21 +186,23 @@ info "Symlinking dotfiles with GNU Stow..."
 info "Running stow simulation to check for conflicts..."
 echo ""
 
-# Directories that should be fully stowed
-FULL_STOW_DIRS=(cursor fastfetch ghostty git jetbrains scripts starship zathura zsh)
+# Directories that should be fully stowed (entire directory symlinked)
+# These should NOT use --no-folding to create directory-level symlinks
+FULL_STOW_DIRS=(cursor fastfetch ghostty git jetbrains nvim scripts starship zathura zsh)
 
 # Directories that need selective file stowing (to avoid plugin pollution)
+# These SHOULD use --no-folding to symlink individual files only
 SELECTIVE_STOW_DIRS=(karabiner tmux yazi zed)
 
-# Simulate full directory stow
+# Simulate full directory stow (no --no-folding, creates directory-level symlinks)
 for dir in "${FULL_STOW_DIRS[@]}"; do
     if [ -d "$dir" ]; then
         info "Simulating stow for: $dir"
-        stow --simulate --no-folding -v "$dir" 2>&1 || true
+        stow --simulate -v "$dir" 2>&1 || true
     fi
 done
 
-# Simulate selective file stow
+# Simulate selective file stow (uses --no-folding to symlink files individually)
 for dir in "${SELECTIVE_STOW_DIRS[@]}"; do
     if [ -d "$dir" ]; then
         info "Simulating selective stow for: $dir (config files only)"
@@ -221,15 +225,15 @@ fi
 
 info "Proceeding with actual stow..."
 
-# Actually stow full directories
+# Actually stow full directories (no --no-folding, creates directory-level symlinks)
 for dir in "${FULL_STOW_DIRS[@]}"; do
     if [ -d "$dir" ]; then
         info "Stowing: $dir"
-        stow --restow --no-folding -v "$dir"
+        stow --restow -v "$dir"
     fi
 done
 
-# Stow selective directories (only config files, not plugin directories)
+# Stow selective directories (uses --no-folding to symlink files individually, avoids plugin pollution)
 for dir in "${SELECTIVE_STOW_DIRS[@]}"; do
     if [ -d "$dir" ]; then
         info "Stowing config files from: $dir"
@@ -238,6 +242,13 @@ for dir in "${SELECTIVE_STOW_DIRS[@]}"; do
 done
 
 success "Dotfiles symlinked successfully!"
+#
+# Install yazi plugins if yazi is installed
+if command -v yazi &> /dev/null; then
+    info "Installing yazi plugins..."
+    ya pkg add dedukun/bookmarks || true
+    success "Yazi plugin setup complete"
+fi
 
 # ============================================================================
 # Step 8: Set ZSH as default shell (if not already)
