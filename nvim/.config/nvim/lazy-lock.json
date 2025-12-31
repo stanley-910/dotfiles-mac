@@ -1,3 +1,6 @@
 {
-  "lazy.nvim": { "branch": "main", "commit": "85c7ff3711b730b4030d03144f6db6375044ae82" }
+  "lazy.nvim": { "branch": "main", "commit": "306a05526ada86a7b30af95c5cc81ffba93fef97" },
+  "mini.icons": { "branch": "main", "commit": "efc85e42262cd0c9e1fdbf806c25cb0be6de115c" },
+  "oil-git-status.nvim": { "branch": "main", "commit": "4b5cf53842c17a09420919e655a6a559da3112d7" },
+  "oil.nvim": { "branch": "master", "commit": "963c8d2c5538c4a896a31f396b8a5a2683e254dc" }
 }

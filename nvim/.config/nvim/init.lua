@@ -93,4 +93,5 @@ end, { desc = 'Print the git blame for the current line' })
 -- 'updatetime' and when going to insert mode
 vim.cmd('packadd! nohlsearch')
 
-
+-- default split options affect oil.nvim 
+vim.o.splitright = true
