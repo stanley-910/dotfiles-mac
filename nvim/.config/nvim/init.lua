@@ -4,7 +4,6 @@ require("config.keymap")
 require("config.lazy")
 require("config.lsp")
 
-
 --
 -- Set <space> as the leader key
 -- See `:help mapleader`
@@ -26,6 +25,7 @@ vim.o.relativenumber = true
 -- Sync clipboard between OS and Neovim. Schedule the setting after `UiEnter` because it can
 -- increase startup-time. Remove this option if you want your OS clipboard to remain independent.
 -- See `:help 'clipboard'`
+
 vim.api.nvim_create_autocmd('UIEnter', {
   callback = function()
     vim.o.clipboard = 'unnamedplus'
@@ -96,3 +96,5 @@ vim.cmd('packadd! nohlsearch')
 
 -- default split options affect oil.nvim 
 vim.o.splitright = true
+
+
