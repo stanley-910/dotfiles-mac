@@ -2,6 +2,7 @@
 require("config")
 require("config.keymap")
 require("config.lazy")
+require("config.lsp")
 
 
 --
